@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class Item:
     def __init__(self, name, sell_in, quality):
         self.name = name
@@ -19,7 +22,14 @@ class QualityExceedsMaxException:
 
 
 class TradeableItem(Item):
-    def __init__(self, name, sell_in, quality, min_quality=0, max_quality=50):
+    def __init__(
+        self,
+        name: str,
+        sell_in: int,
+        quality: int,
+        min_quality: int = 0,
+        max_quality: int = 50,
+    ):
         super().__init__(name, sell_in, quality)
         self.min_quality = 0
         self.max_quality = 50
@@ -58,7 +68,7 @@ class AgedBrie(TradeableItem):
 
 
 class Sulfuras(TradeableItem):
-    def __init__(self, name, sell_in, quality):
+    def __init__(self, name: str, sell_in: int, quality: int):
         super().__init__(name, sell_in, quality, min_quality=80, max_quality=80)
 
     def update_quality(self):
@@ -80,3 +90,10 @@ class BackstagePasses(TradeableItem):
             self.quality += 2
         else:
             self.quality += 1
+
+
+def create_tradable_item(item: Item, catalog: Dict) -> TradeableItem:
+    for prefix, object in catalog.items():
+        if item.name.lower().startswith(prefix):
+            return object(name=item.name, quality=item.quality, sell_in=item.sell_in)
+    return TradeableItem(name=item.name, quality=item.quality, sell_in=item.sell_in)

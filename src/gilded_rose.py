@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
+from .items import *
 
 
 class GildedRose(object):
+    CATALOG = {
+        "aged brie": AgedBrie,
+        "sulfuras": Sulfuras,
+        "backstage passes": BackstagePasses,
+    }
+
     def __init__(self, items):
         self.items = items
+        self.tradable_items = [
+            create_tradable_item(item=item, catalog=self.CATALOG) for item in items
+        ]
 
     def update_quality(self):
         for item in self.items:
