@@ -2,7 +2,21 @@
 import pytest as pytest
 
 from src.gilded_rose import GildedRose
-from src.items import Item
+from src.items import (
+    AgedBrie,
+    Sulfuras,
+    BackstagePasses,
+    Item,
+    QualityExceedsMaxException,
+    create_tradable_item,
+    QualityExceedsMinException,
+)
+
+CATALOG = {
+    "aged brie": AgedBrie,
+    "sulfuras": Sulfuras,
+    "backstage passes": BackstagePasses,
+}
 
 
 def test_foo():
@@ -56,3 +70,31 @@ def test_update_quality_quality(item_type, quality, sell_in, expected_quality):
     gilded_rose = GildedRose(items)
     gilded_rose.update_quality()
     assert expected_quality == gilded_rose.tradaeble_items[0].quality
+
+
+@pytest.mark.parametrize(
+    "item",
+    [
+        Item("basic", 0, 51),
+        Item("Aged Brie", 0, 51),
+        Item("Sulfuras, Hand of Ragnaros", 0, 81),
+        Item("Backstage passes to a TAFKAL80ETC concert", 0, 51),
+    ],
+)
+def test_create_tradable_item_quality_upperlimit(item: Item):
+    with pytest.raises(QualityExceedsMaxException):
+        create_tradable_item(item, catalog=CATALOG)
+
+
+@pytest.mark.parametrize(
+    "item",
+    [
+        Item("basic", 0, -1),
+        Item("Aged Brie", 0, -1),
+        Item("Sulfuras, Hand of Ragnaros", 0, 79),
+        Item("Backstage passes to a TAFKAL80ETC concert", 0, -1),
+    ],
+)
+def test_create_tradable_item_quality_lowerlimit(item: Item):
+    with pytest.raises(QualityExceedsMinException):
+        create_tradable_item(item, catalog=CATALOG)

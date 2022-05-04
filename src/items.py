@@ -33,6 +33,7 @@ class TradeableItem(Item):
         super().__init__(name, sell_in, quality)
         self.min_quality = min_quality
         self.max_quality = max_quality
+        self.check_quality()
 
     def daily_update(self):
         self.check_quality()
