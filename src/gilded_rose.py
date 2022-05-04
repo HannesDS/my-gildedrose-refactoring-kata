@@ -23,10 +23,7 @@ class GildedRose(object):
                     f"item:{item.name} , quality: {item.quality}"
                 )
                 continue
-
-        self.tradaeble_items = [
-            create_tradable_item(item=item, catalog=self.CATALOG) for item in items
-        ]
+        self.tradaeble_items = tradeable_items
 
     def update_quality(self):
         for tradeable_item in self.tradaeble_items:
