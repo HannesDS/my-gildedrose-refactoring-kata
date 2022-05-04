@@ -11,12 +11,12 @@ class Item:
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
 
-class QualityExceedsMinException:
+class QualityExceedsMinException(Exception):
     "This error is raised when the quality of an item exceeds its minimum value"
     pass
 
 
-class QualityExceedsMaxException:
+class QualityExceedsMaxException(Exception):
     "This error is raised when the quality of an item exceeds its maximum value"
     pass
 
@@ -31,8 +31,8 @@ class TradeableItem(Item):
         max_quality: int = 50,
     ):
         super().__init__(name, sell_in, quality)
-        self.min_quality = 0
-        self.max_quality = 50
+        self.min_quality = min_quality
+        self.max_quality = max_quality
 
     def daily_update(self):
         self.check_quality()
@@ -72,10 +72,10 @@ class Sulfuras(TradeableItem):
         super().__init__(name, sell_in, quality, min_quality=80, max_quality=80)
 
     def update_quality(self):
-        pass
+        return
 
     def update_sell_in(self):
-        pass
+        return
 
 
 class BackstagePasses(TradeableItem):
