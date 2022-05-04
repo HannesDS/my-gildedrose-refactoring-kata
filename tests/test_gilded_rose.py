@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest as pytest
 
-from src.gilded_rose import Item, GildedRose
+from src.items import Item
+from src.gilded_rose import GildedRose
 
 
 def test_foo():
