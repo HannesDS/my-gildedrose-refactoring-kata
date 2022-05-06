@@ -3,20 +3,11 @@ import pytest as pytest
 
 from src.gilded_rose import GildedRose
 from src.items import (
-    AgedBrie,
-    Sulfuras,
-    BackstagePasses,
     Item,
     QualityExceedsMaxException,
-    create_tradable_item,
+    factory_tradable_item,
     QualityExceedsMinException,
 )
-
-CATALOG = {
-    "aged brie": AgedBrie,
-    "sulfuras": Sulfuras,
-    "backstage passes": BackstagePasses,
-}
 
 
 def test_foo():
@@ -83,7 +74,7 @@ def test_update_quality_quality(item_type, quality, sell_in, expected_quality):
 )
 def test_create_tradable_item_quality_upperlimit(item: Item):
     with pytest.raises(QualityExceedsMaxException):
-        create_tradable_item(item, catalog=CATALOG)
+        factory_tradable_item(item)
 
 
 @pytest.mark.parametrize(
@@ -97,4 +88,4 @@ def test_create_tradable_item_quality_upperlimit(item: Item):
 )
 def test_create_tradable_item_quality_lowerlimit(item: Item):
     with pytest.raises(QualityExceedsMinException):
-        create_tradable_item(item, catalog=CATALOG)
+        factory_tradable_item(item)

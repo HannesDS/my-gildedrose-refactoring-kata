@@ -3,20 +3,12 @@ from .items import *
 
 
 class GildedRose(object):
-    CATALOG = {
-        "aged brie": AgedBrie,
-        "sulfuras": Sulfuras,
-        "backstage passes": BackstagePasses,
-    }
-
     def __init__(self, items):
         self.items = items
         tradeable_items = []
         for item in items:
             try:
-                tradeable_items.append(
-                    create_tradable_item(item=item, catalog=self.CATALOG)
-                )
+                tradeable_items.append(factory_tradable_item(item=item))
             except (QualityExceedsMinException, QualityExceedsMaxException):
                 print(
                     "Please provide a legitimate quality for this specific item."
