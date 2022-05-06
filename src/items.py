@@ -31,15 +31,15 @@ class TradeableItem(Item):
         max_quality: int = 50,
     ):
         super().__init__(name, sell_in, quality)
-        self.min_quality = min_quality
-        self.max_quality = max_quality
+        self._min_quality = min_quality
+        self._max_quality = max_quality
 
     def daily_update(self):
         self.update_quality()
         self.update_sell_in()
 
     def update_quality(self):
-        if self.quality == self.min_quality:
+        if self.quality == self._min_quality:
             return
         elif self.sell_in < 0:
             self.quality -= 2
@@ -50,9 +50,9 @@ class TradeableItem(Item):
         self.sell_in -= 1
 
     def check_quality(self):
-        if self.max_quality < self.quality:
+        if self._max_quality < self.quality:
             raise QualityExceedsMaxException
-        if self.quality < self.min_quality:
+        if self.quality < self._min_quality:
             raise QualityExceedsMinException
 
 
@@ -73,7 +73,7 @@ class Legendary(TradeableItem):
             min_quality=80,
             max_quality=80,
         )
-        self.tradable_item = tradeable_item
+        self.tradeable_item = tradeable_item
 
     def update_quality(self):
         return
@@ -84,7 +84,7 @@ class Legendary(TradeableItem):
 
 class AgedBrie(TradeableItem):
     def update_quality(self):
-        if self.quality == self.max_quality:
+        if self.quality == self._max_quality:
             return
         elif self.sell_in < 0:
             self.quality += 2
@@ -96,7 +96,7 @@ class BackstagePasses(TradeableItem):
     def update_quality(self):
         if self.sell_in < 0:
             self.quality = 0
-        elif self.quality == self.max_quality:
+        elif self.quality == self._max_quality:
             return
         elif self.sell_in <= 5:
             self.quality += 3
